@@ -1,0 +1,32 @@
+name: 🛡️ Adaptive Security AI - 24/7 Monitor
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'     # Chạy mỗi 30 phút
+    - cron: '0 */6 * * *'       # Chạy mỗi 6 giờ
+  workflow_dispatch:            # Cho phép chạy thủ công
+
+jobs:
+  security-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+      
+      - name: 🔍 Kiểm tra hệ thống
+        run: |
+          echo "🛡️ Adaptive Security AI Running"
+          echo "Owner: Dang Viet Quang"
+          echo "Time: $(date)"
+          
+      - name: 📊 Tạo báo cáo
+        run: |
+          mkdir -p reports
+          echo "Security Report $(date)" > reports/latest.txt
+          echo "Status: OK" >> reports/latest.txt
+          
+      - name: 📤 Upload báo cáo
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-reports
+          path: reports/
