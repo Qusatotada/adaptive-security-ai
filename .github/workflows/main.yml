@@ -11,23 +11,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: 🔍 Kiểm tra hệ thống
         run: |
           echo "🛡️ Adaptive Security AI Running"
           echo "Owner: Dang Viet Quang"
           echo "Time: $(date)"
+          echo "Workflow version: v4 (upload-artifact)"
           
       - name: 📊 Tạo báo cáo
         run: |
           mkdir -p reports
-          echo "Security Report $(date)" > reports/latest.txt
-          echo "Status: OK" >> reports/latest.txt
+          REPORT_FILE="security-report-$(date +%Y%m%d-%H%M%S).txt"
+          echo "Security Report $(date)" > "reports/$REPORT_FILE"
+          echo "Status: OK" >> "reports/$REPORT_FILE"
+          echo "Version: v4" >> "reports/$REPORT_FILE"
+          echo "Report created: $REPORT_FILE"
           
-      - name: 📤 Upload báo cáo
+      - name: 📤 Upload báo cáo (v4)
         uses: actions/upload-artifact@v4
         with:
-          name: security-reports
+          name: security-reports-${{ github.run_id }}
           path: reports/
-# Trigger workflow
+          retention-days: 90
+          if-no-files-found: warn
+          
+      - name: ✅ Xác nhận hoàn tất
+        run: echo "✅ Workflow completed successfully with upload-artifact@v4"
