@@ -30,3 +30,4 @@ jobs:
         with:
           name: security-reports
           path: reports/
+# Trigger workflow
